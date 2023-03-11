@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getCustomers } from "../apis";
 import AddEdit from "../Components/AddEdit";
+import DeleteCustomer from "../Components/DeleteCustomer";
 import Loader from "../Components/Loader";
 import { OPERATIONS, STATUSES } from "../config";
 
@@ -106,9 +107,11 @@ const CustomersList = () => {
                   >
                     Edit
                   </button>
-                  <button className="inline-block bg-red-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    Delete
-                  </button>
+                  <DeleteCustomer
+                    id={customer.id}
+                    closePopup={closePopup}
+                    showNotification={showNotification}
+                  />
                 </div>
               </div>
             );
