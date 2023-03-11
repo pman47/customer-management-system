@@ -8,3 +8,8 @@ export const STATUSES = {
   SUCCESS: "Success",
   ERROR: "Error",
 };
+
+export const OPERATIONS = {
+  CREATE: "create",
+  EDIT: "edit",
+};

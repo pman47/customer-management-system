@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getCustomers } from "../apis";
+import AddEdit from "../Components/AddEdit";
 import Loader from "../Components/Loader";
+import { OPERATIONS, STATUSES } from "../config";
 
 const phoneIcon = () => {
   return (
@@ -17,6 +21,9 @@ const phoneIcon = () => {
 const CustomersList = () => {
   const [customerData, setCustomerData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [operation, setOperation] = useState();
+  const [editData, setEditData] = useState();
 
   const fetchData = async () => {
     setLoading(true);
@@ -29,9 +36,48 @@ const CustomersList = () => {
     fetchData();
   }, []);
 
+  const openPopup = (operation) => {
+    setOperation(operation);
+    setPopupVisible(true);
+  };
+
+  const closePopup = (reload = false) => {
+    setOperation();
+    setPopupVisible(false);
+    setEditData();
+    if (reload) fetchData();
+  };
+
+  const showNotification = (res) => {
+    if (res.type === STATUSES.SUCCESS) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  };
+
   return (
     <div>
-      <p className="text-xl mb-3">Customers</p>
+      <ToastContainer />
+      {popupVisible && (
+        <AddEdit
+          closePopup={closePopup}
+          operation={operation}
+          editData={editData}
+          showNotification={showNotification}
+        />
+      )}
+      <div className="flex gap-5">
+        <span className="text-xl mb-3">Customers</span>
+        <button
+          onClick={() => {
+            openPopup(OPERATIONS.CREATE);
+          }}
+          className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+        >
+          Add Customer
+        </button>
+      </div>
       {loading && <Loader />}
       {!loading && (
         <div className="flex flex-wrap mx-1 justify-center 2xl:justify-start xl:justify-start lg:justify-start sm:justify-center">
@@ -48,7 +94,13 @@ const CustomersList = () => {
                   </p>
                 </div>
                 <div className="px-6 py-2">
-                  <button className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  <button
+                    onClick={() => {
+                      setEditData(customer);
+                      openPopup(OPERATIONS.EDIT);
+                    }}
+                    className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                  >
                     Edit
                   </button>
                   <button className="inline-block bg-red-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
