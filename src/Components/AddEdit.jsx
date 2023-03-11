@@ -3,6 +3,7 @@ import { createCustomer, editCustomer } from "../apis";
 import { OPERATIONS, STATUSES } from "../config";
 import Loader from "./Loader";
 
+// initial data for any customer
 const initialData = {
   name: "",
   address: "",
@@ -13,6 +14,27 @@ const AddEdit = (props) => {
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
 
+  /**
+   * When component loads first it will check if its edit operation and if its containing data for editing,
+   * if so then we will store that data to our state
+   */
+  useEffect(() => {
+    if (props.operation === OPERATIONS.EDIT && props.editData) {
+      setData(props.editData);
+    }
+  }, [props.editData]);
+
+  // Whenever user change any data from name/address/phone fields we will update that data to our state variable also using this function
+  const handleChange = (e) => {
+    const tempData = { ...data };
+    tempData[e.target.id] = e.target.value;
+    setData(tempData);
+  };
+
+  /**
+   * When user done with his updates and click on submit button it will call handle submit function
+   * It first checks if operation was create or edit if it was create then it will create new customer or else it will update existing customer data.
+   */
   const handleSubmit = async () => {
     setLoading(true);
     if (props.operation === OPERATIONS.CREATE) {
@@ -30,18 +52,6 @@ const AddEdit = (props) => {
     }
     setLoading(false);
   };
-
-  const handleChange = (e) => {
-    const tempData = { ...data };
-    tempData[e.target.id] = e.target.value;
-    setData(tempData);
-  };
-
-  useEffect(() => {
-    if (props.operation === OPERATIONS.EDIT && props.editData) {
-      setData(props.editData);
-    }
-  }, [props.editData]);
 
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-gray-200 bg-opacity-50 grid place-items-center">

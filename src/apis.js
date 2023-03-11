@@ -1,7 +1,9 @@
+// To add all api's to one page so its easier to configure in the future
 import { API_URL, COLLECTIONS, STATUSES } from "./config";
 const { CUSTOMER } = COLLECTIONS;
 const { SUCCESS, ERROR } = STATUSES;
 
+// Api for fetching customers details
 export async function getCustomers(id) {
   let url = API_URL + CUSTOMER;
   if (id) {
@@ -17,6 +19,7 @@ export async function getCustomers(id) {
     .catch((_) => ({ type: ERROR, message: "Could not Fetch Customers" }));
 }
 
+// Api to creating new customer
 export async function createCustomer(data) {
   const { name, address, phone } = data;
   let url = API_URL + CUSTOMER;
@@ -39,6 +42,7 @@ export async function createCustomer(data) {
   return { type: ERROR, message: "Pls submit required data" };
 }
 
+// Api for editing customer
 export async function editCustomer(data) {
   if (data.id) {
     let url = API_URL + CUSTOMER + `/${data.id}`;
@@ -65,6 +69,7 @@ export async function editCustomer(data) {
   return { type: ERROR, message: "Pls submit required data" };
 }
 
+// Api for deleting customer
 export async function removeCustomer(id) {
   if (id) {
     let url = API_URL + CUSTOMER + `/${id}`;

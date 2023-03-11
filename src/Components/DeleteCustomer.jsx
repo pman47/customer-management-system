@@ -7,6 +7,7 @@ const DeleteCustomer = (props) => {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // For handling delete operation of customer when user click on delete button from popup.
   const handleDelete = async () => {
     setLoading(true);
     if (props.id) {

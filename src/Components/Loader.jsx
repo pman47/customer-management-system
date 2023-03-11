@@ -1,3 +1,4 @@
+// Its just a loading component which renders loader
 const Loader = () => {
   return (
     <div role="status">
