@@ -8,7 +8,7 @@ export async function getCustomers(id) {
     url += `/${id}`;
   }
   return await fetch(url)
-    .then((res) => res.json)
+    .then((res) => res.json())
     .then((response) => ({
       type: SUCCESS,
       message: "Successfully Fetched Customers",
@@ -28,7 +28,7 @@ export async function createCustomer(data) {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((response) => ({
         type: SUCCESS,
         message: "Successfully Created Customer",
@@ -54,7 +54,7 @@ export async function editCustomer(data) {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((response) => ({
         type: SUCCESS,
         message: "Successfully Updated Customer",
@@ -71,7 +71,7 @@ export async function removeCustomer(id) {
     return await fetch(url, {
       method: "DELETE",
     })
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((response) => ({
         type: SUCCESS,
         message: "Successfully Removed Customer",
