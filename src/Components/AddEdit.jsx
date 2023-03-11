@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { createCustomer } from "../apis";
+import { useEffect, useState } from "react";
+import { createCustomer, editCustomer } from "../apis";
 import { OPERATIONS, STATUSES } from "../config";
 import Loader from "./Loader";
 
@@ -21,6 +21,12 @@ const AddEdit = (props) => {
         props.closePopup(true);
       }
       props.showNotification(response);
+    } else if (props.operation === OPERATIONS.EDIT) {
+      const response = await editCustomer(data);
+      if (response.type === STATUSES.SUCCESS) {
+        props.closePopup(true);
+      }
+      props.showNotification(response);
     }
     setLoading(false);
   };
@@ -30,6 +36,12 @@ const AddEdit = (props) => {
     tempData[e.target.id] = e.target.value;
     setData(tempData);
   };
+
+  useEffect(() => {
+    if (props.operation === OPERATIONS.EDIT && props.editData) {
+      setData(props.editData);
+    }
+  }, [props.editData]);
 
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-gray-200 bg-opacity-50 grid place-items-center">
@@ -41,7 +53,7 @@ const AddEdit = (props) => {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="name"
+                  htmlFor="name"
                 >
                   Name
                 </label>
@@ -51,12 +63,13 @@ const AddEdit = (props) => {
                   type="text"
                   placeholder="Name"
                   onChange={handleChange}
+                  value={data.name}
                 />
               </div>
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="address"
+                  htmlFor="address"
                 >
                   Address
                 </label>
@@ -66,12 +79,13 @@ const AddEdit = (props) => {
                   type="text"
                   placeholder="Address"
                   onChange={handleChange}
+                  value={data.address}
                 />
               </div>
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="phone"
+                  htmlFor="phone"
                 >
                   Phone
                 </label>
@@ -81,6 +95,7 @@ const AddEdit = (props) => {
                   type="text"
                   placeholder="Phone Number"
                   onChange={handleChange}
+                  value={data.phone}
                 />
               </div>
               <div className="flex items-center justify-between">
@@ -89,7 +104,8 @@ const AddEdit = (props) => {
                   type="button"
                   onClick={handleSubmit}
                 >
-                  Add Customer
+                  {props.operation === OPERATIONS.CREATE ? "Add" : "Edit"}{" "}
+                  Customer
                 </button>
                 <button
                   onClick={() => {

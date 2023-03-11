@@ -83,7 +83,10 @@ const CustomersList = () => {
         <div className="flex flex-wrap mx-1 justify-center 2xl:justify-start xl:justify-start lg:justify-start sm:justify-center">
           {customerData.map((customer) => {
             return (
-              <div className="max-w-xs w-full rounded overflow-hidden shadow-lg">
+              <div
+                key={customer.id}
+                className="max-w-xs w-full rounded overflow-hidden shadow-lg"
+              >
                 <div className="px-6 py-4">
                   <div className="font-bold text-lg">#{customer.id}</div>
                   <div className="font-bold text-xl mb-1">{customer.name}</div>
